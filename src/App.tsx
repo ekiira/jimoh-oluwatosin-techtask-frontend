@@ -6,12 +6,12 @@ import Header from "./components/Header";
 
 function App() {
   return (
-    <div>
+    <div className="bg-sky-50 min-h-screen">
       <Router>
         <Header />
         <Routes>
           <Route path="/" element={<ChatList />} />
-          <Route path="profile" element={<ChatProfile />} />
+          <Route path=":profile" element={<ChatProfile />} />
         </Routes>
       </Router>
     </div>
