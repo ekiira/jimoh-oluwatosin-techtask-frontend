@@ -18,11 +18,11 @@ function ChatList() {
   }
 
   return (
-    <div className="py-10 md:py-20">
-      <div className="w-11/12 lg:w-4/5 mx-auto">
+    <div className="pt-10 pb-20 md:py-20">
+      <div className="w-11/12 lg:w-4/5 container mx-auto">
         <div className="md:flex justify-between pb-10">
           <div>
-            <h3 className="text-4xl text-gray-800 font-medium mb-10 md-mb-0 text-center md:text-left">
+            <h3 className="text-3xl md:text-4xl text-gray-800 font-medium mb-10 md:mb-0 text-center md:text-left">
               {" "}
               My Chatbots
             </h3>
@@ -31,7 +31,7 @@ function ChatList() {
             <div className="md:mr-5">
               <input className="input" placeholder="search..." />
             </div>
-            <div className="flex justify-end mt-3 md:mt-0">
+            <div className="flex justify-end items-baseline mt-3 md:mt-0">
               <button
                 onClick={() => setViewType("grid")}
                 className={`mr-1 ${

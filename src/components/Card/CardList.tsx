@@ -7,18 +7,17 @@ interface ICardListProps {
   name: string;
   slug: string;
   isFavorite: boolean;
-  createdDate: Date | string;
+  createdDate: Date | string | any;
 }
 
 function CardList(props: ICardListProps) {
   const { image, name, isFavorite, slug, createdDate } = props;
-
   return (
     <div className="flex items-center w-full mb-5">
-      <div className="mr-5">
+      <div className="mr-3 md:mr-5">
         <Star isActive={isFavorite} />
       </div>
-      <div className="py-3 bg-white shadow-md h-auto w-full rounded-lg px-5 text-center flex items-center justify-between">
+      <div className="py-3 bg-white shadow-md h-auto w-full rounded-lg px-5 text-center md:flex items-center justify-between">
         <div className="flex items-center">
           <div className=" mr-4">
             <Link to={slug}>
@@ -33,8 +32,10 @@ function CardList(props: ICardListProps) {
             <p className="font-semibold capitalize">{name}</p>
           </div>
         </div>
-        <div>
-          <p className="text-sm text-gray-600 capitalize">{createdDate}</p>
+        <div className="flex justify-end">
+          <p className="text-sm text-gray-600 capitalize">
+            {createdDate.split("T")[0].replace(/\-/g, "/")}
+          </p>
         </div>
       </div>
     </div>
