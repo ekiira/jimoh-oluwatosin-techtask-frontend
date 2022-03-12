@@ -1,8 +1,6 @@
-import React from "react";
-import "./App.css";
 
 function App() {
-  return <div className="App">Blip</div>;
+  return <div className='text-red-900 text-center'>Blip</div>;
 }
 
 export default App;
