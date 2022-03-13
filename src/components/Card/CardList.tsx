@@ -8,14 +8,15 @@ interface ICardListProps {
   slug: string;
   isFavorite: boolean;
   createdDate: Date | string | any;
+  addToFavorite: () => void;
 }
 
 function CardList(props: ICardListProps) {
-  const { image, name, isFavorite, slug, createdDate } = props;
+  const { image, name, isFavorite, slug, createdDate, addToFavorite } = props;
   return (
     <div className="flex items-center w-full mb-5">
       <div className="mr-3 md:mr-5">
-        <Star isActive={isFavorite} />
+        <Star isActive={isFavorite} onClick={addToFavorite} />
       </div>
       <div className="py-3 bg-white shadow-md h-auto w-full rounded-lg px-5 text-center md:flex items-center justify-between">
         <div className="flex items-center">
@@ -32,9 +33,9 @@ function CardList(props: ICardListProps) {
             <p className="font-semibold capitalize">{name}</p>
           </div>
         </div>
-        <div className="flex justify-end">
+        <div className="flex justify-end mt-3">
           <p className="text-sm text-gray-600 capitalize">
-            {createdDate.split("T")[0].replace(/\-/g, "/")}
+            {createdDate.split("T")[0].replace(/-/g, "/")}
           </p>
         </div>
       </div>

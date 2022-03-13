@@ -1,26 +1,62 @@
-import { Fragment, useState } from "react";
+import { useEffect, useState } from "react";
 
-import { Menu, Transition } from "@headlessui/react";
-import { AdjustmentsIcon } from "@heroicons/react/outline";
 import { ViewGridIcon, ViewListIcon } from "@heroicons/react/solid";
 
 import CardGrid from "../../components/Card/CardGrid";
 import CardList from "../../components/Card/CardList";
+import DropDown from "../../components/Dropdown";
 
 import { chatList } from "../../data";
+import FavoritesModal from "../../components/Modal";
 
+const filters = ["order by name", "order by creation"];
+interface IObj {
+  [key: string]: string | boolean | any;
+}
 function ChatList() {
+  const [data, setData] = useState<Array<IObj>>(chatList);
+  const [favorites, setFavorites] = useState<Array<IObj>>([]);
   const [viewType, setViewType] = useState<string>("grid");
-  const filters = ["order by name", "order by creation"];
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
-  function classNames(...classes: any) {
-    return classes.filter(Boolean).join(" ");
-  }
+  useEffect(() => {
+    // add isFav property to data objects
+    const buildData = () => {
+      const arr: Array<IObj> = [];
+      chatList?.forEach((item: any) => {
+        arr.push({ ...item, isFav: false });
+      });
+      return arr;
+    };
+    setData(buildData());
+  }, []);
+
+  const addToFavorites = (slug: string, index: number) => {
+    if (!favorites?.some((el) => el.shortName === slug)) {
+      // add item to favorites array
+      data
+        .filter((item) => item.shortName === slug)
+        .forEach((value: IObj) => {
+          setFavorites([
+            ...favorites,
+            { ...value, isFav: !value.isFav, index: index },
+          ]);
+        });
+    } else {
+      // remove item from favorites array
+      setFavorites([...favorites.filter((item) => item.shortName !== slug)]);
+    }
+
+    let newData = [...data];
+    newData[index] = { ...newData[index], isFav: !newData[index].isFav };
+    setData(newData);
+  };
+
 
   return (
     <div className="pt-10 pb-20 md:py-20">
       <div className="w-11/12 lg:w-4/5 container mx-auto">
-        <div className="md:flex justify-between pb-10">
+        <div className="md:flex justify-between pb-5">
           <div>
             <h3 className="text-3xl md:text-4xl text-gray-800 font-medium mb-10 md:mb-0 text-center md:text-left">
               {" "}
@@ -49,58 +85,29 @@ function ChatList() {
               >
                 <ViewListIcon className="h-8 w-8" />
               </button>
-              <Menu as="div" className="inline-block text-left relative">
-                <div>
-                  <Menu.Button className="inline-flex justify-center w-full text-sm text-gray-600 focus:outline-none">
-                    <AdjustmentsIcon className="h-8 w-8" />
-                  </Menu.Button>
-                </div>
-
-                <Transition
-                  as={Fragment}
-                  enter="transition ease-out duration-100"
-                  enterFrom="transform opacity-0 scale-95"
-                  enterTo="transform opacity-100 scale-100"
-                  leave="transition ease-in duration-75"
-                  leaveFrom="transform opacity-100 scale-100"
-                  leaveTo="transform opacity-0 scale-95"
-                >
-                  <Menu.Items className="origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                    <div className="py-1">
-                      {filters.map((item, index) => (
-                        <Menu.Item key={index}>
-                          {({ active }) => (
-                            <div
-                              // onClick={() => setOption(item)}
-                              className={`text-sm p-3 capitalize cursor-pointer ${classNames(
-                                active
-                                  ? "bg-royal text-white"
-                                  : "text-gray-700",
-                                "block"
-                              )}`}
-                            >
-                              {item}
-                            </div>
-                          )}
-                        </Menu.Item>
-                      ))}
-                    </div>
-                  </Menu.Items>
-                </Transition>
-              </Menu>
+              <DropDown options={filters} />
             </div>
           </div>
         </div>
-
+        <div className="flex justify-end pb-10">
+          <button
+            className="text-gray-600 text-xl"
+            onClick={() => setOpenModal(true)}
+          >
+            View Favorites:
+            <span className="font-semibold"> {favorites.length || 0}</span>
+          </button>
+        </div>
         {viewType === "grid" ? (
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            {chatList?.map((el, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {data?.map((el, index) => (
               <CardGrid
+                addToFavorite={() => addToFavorites(el.shortName, index)}
                 key={index}
                 name={el.name}
                 slug={el.shortName}
                 plan={el.plan}
-                isFavorite={false}
+                isFavorite={el.isFav}
                 image={el.image}
               />
             ))}
@@ -108,19 +115,26 @@ function ChatList() {
         ) : null}
         {viewType === "list" ? (
           <div className="">
-            {chatList?.map((el, index) => (
+            {data?.map((el, index) => (
               <CardList
+                addToFavorite={() => addToFavorites(el.shortName, index)}
                 key={index}
                 name={el.name}
                 slug={el.shortName}
                 createdDate={el.created}
-                isFavorite={false}
+                isFavorite={el.isFav}
                 image={el.image}
               />
             ))}
           </div>
         ) : null}
       </div>
+      <FavoritesModal
+        open={openModal}
+        setOpen={setOpenModal}
+        data={favorites}
+        addToFavorites={addToFavorites}
+      />
     </div>
   );
 }
