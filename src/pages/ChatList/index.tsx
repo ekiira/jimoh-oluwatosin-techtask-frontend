@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, FormEvent } from "react";
 
 import { ViewGridIcon, ViewListIcon } from "@heroicons/react/solid";
 
@@ -9,49 +9,77 @@ import DropDown from "../../components/Dropdown";
 import { chatList } from "../../data";
 import FavoritesModal from "../../components/Modal";
 
-const filters = ["order by name", "order by creation"];
+const filters = [
+  { value: "name", label: "order by name" },
+  { value: "date", label: "order by creation" },
+];
 interface IObj {
   [key: string]: string | boolean | any;
 }
 function ChatList() {
   const [data, setData] = useState<Array<IObj>>(chatList);
-  const [favorites, setFavorites] = useState<Array<IObj>>([]);
   const [viewType, setViewType] = useState<string>("grid");
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [search, setSearch] = useState<string>("");
+  const [newData, setNewData] = useState<Array<IObj>>([]);
+  const favorites = newData?.filter((al) => al.isFav);
 
   useEffect(() => {
-    // add isFav property to data objects
+    // add isFav and index property to data objects
     const buildData = () => {
       const arr: Array<IObj> = [];
-      chatList?.forEach((item: any) => {
+      chatList?.forEach((item: IObj) => {
         arr.push({ ...item, isFav: false });
       });
       return arr;
     };
     setData(buildData());
+    setNewData(buildData());
   }, []);
 
-  const addToFavorites = (slug: string, index: number) => {
-    if (!favorites?.some((el) => el.shortName === slug)) {
-      // add item to favorites array
-      data
-        .filter((item) => item.shortName === slug)
-        .forEach((value: IObj) => {
-          setFavorites([
-            ...favorites,
-            { ...value, isFav: !value.isFav, index: index },
-          ]);
-        });
-    } else {
-      // remove item from favorites array
-      setFavorites([...favorites.filter((item) => item.shortName !== slug)]);
-    }
-
-    let newData = [...data];
-    newData[index] = { ...newData[index], isFav: !newData[index].isFav };
-    setData(newData);
+  const addToFavorites = (slug: string) => {
+    const favNewData = newData.map((a) => {
+      return a.shortName === slug ? { ...a, isFav: !a.isFav } : a;
+    });
+    const favData = data.map((a) => {
+      return a.shortName === slug ? { ...a, isFav: !a.isFav } : a;
+    });
+    setNewData(favNewData);
+    setData(favData);
   };
 
+  const onSearchFilter = (e: FormEvent<HTMLInputElement>) => {
+    const { value } = e.currentTarget;
+    setSearch(value);
+    if (value.length) {
+      const filtered = newData.filter((item) =>
+        item.name.toLowerCase().startsWith(value.toLowerCase().trim())
+      );
+      setNewData(filtered);
+    } else {
+      setNewData(data);
+    }
+  };
+
+  const orderFilter = (value: string) => {
+    if (value === "date") {
+      const date = newData?.slice()?.sort((a, b): any => {
+        return +new Date(a.created) - +new Date(b.created);
+      });
+      setNewData(date);
+    } else if (value === "name") {
+      const name = newData?.slice()?.sort((a, b): any => {
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
+      });
+      setNewData(name);
+    }
+  };
 
   return (
     <div className="pt-10 pb-20 md:py-20">
@@ -65,7 +93,12 @@ function ChatList() {
           </div>
           <div className="md:flex items-center">
             <div className="md:mr-5">
-              <input className="input" placeholder="search..." />
+              <input
+                className="input"
+                placeholder="search..."
+                value={search}
+                onChange={onSearchFilter}
+              />
             </div>
             <div className="flex justify-end items-baseline mt-3 md:mt-0">
               <button
@@ -85,7 +118,7 @@ function ChatList() {
               >
                 <ViewListIcon className="h-8 w-8" />
               </button>
-              <DropDown options={filters} />
+              <DropDown options={filters} me={orderFilter} />
             </div>
           </div>
         </div>
@@ -98,36 +131,50 @@ function ChatList() {
             <span className="font-semibold"> {favorites.length || 0}</span>
           </button>
         </div>
-        {viewType === "grid" ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {data?.map((el, index) => (
-              <CardGrid
-                addToFavorite={() => addToFavorites(el.shortName, index)}
-                key={index}
-                name={el.name}
-                slug={el.shortName}
-                plan={el.plan}
-                isFavorite={el.isFav}
-                image={el.image}
-              />
-            ))}
-          </div>
-        ) : null}
-        {viewType === "list" ? (
-          <div className="">
-            {data?.map((el, index) => (
-              <CardList
-                addToFavorite={() => addToFavorites(el.shortName, index)}
-                key={index}
-                name={el.name}
-                slug={el.shortName}
-                createdDate={el.created}
-                isFavorite={el.isFav}
-                image={el.image}
-              />
-            ))}
-          </div>
-        ) : null}
+        <>
+          {newData.length ? (
+            <div>
+              {viewType === "grid" ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {newData.map((el, index) => (
+                    <CardGrid
+                      addToFavorite={() => addToFavorites(el.shortName)}
+                      key={index}
+                      name={el.name}
+                      slug={el.shortName}
+                      plan={el.plan}
+                      isFavorite={el.isFav}
+                      image={el.image}
+                    />
+                  ))}
+                </div>
+              ) : null}
+              <div>
+                {viewType === "list" ? (
+                  <div>
+                    {newData?.map((el, index) => (
+                      <CardList
+                        addToFavorite={() => addToFavorites(el.shortName)}
+                        key={index}
+                        name={el.name}
+                        slug={el.shortName}
+                        createdDate={el.created}
+                        isFavorite={el.isFav}
+                        image={el.image}
+                      />
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+            </div>
+          ) : (
+            <div>
+              <h2 className="md:text-xl lg:text-2xl text-center font-medium capitalize py-10">
+                No results found!
+              </h2>
+            </div>
+          )}
+        </>
       </div>
       <FavoritesModal
         open={openModal}

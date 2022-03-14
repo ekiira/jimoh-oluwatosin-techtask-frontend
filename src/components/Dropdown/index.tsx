@@ -3,10 +3,15 @@ import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { AdjustmentsIcon } from "@heroicons/react/outline";
 
-interface IDropdownProps {
-  options: Array<string>;
+interface IObj {
+  value: string;
+  label: string;
 }
-function DropDown({ options }: IDropdownProps) {
+interface IDropdownProps {
+  options: Array<IObj>;
+  me: (p: string) => void;
+}
+function DropDown({ options, me }: IDropdownProps) {
   const classNames = (...classes: any) => {
     return classes.filter(Boolean).join(" ");
   };
@@ -33,13 +38,13 @@ function DropDown({ options }: IDropdownProps) {
               <Menu.Item key={index}>
                 {({ active }) => (
                   <div
-                    // onClick={() => setOption(item)}
+                    onClick={() => me(item.value)}
                     className={`text-sm p-3 capitalize cursor-pointer ${classNames(
                       active ? "bg-royal text-white" : "text-gray-700",
                       "block"
                     )}`}
                   >
-                    {item}
+                    {item.label}
                   </div>
                 )}
               </Menu.Item>

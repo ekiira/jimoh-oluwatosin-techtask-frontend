@@ -29,13 +29,15 @@ function CardList(props: ICardListProps) {
               />
             </Link>
           </div>
-          <div className="">
-            <p className="font-semibold capitalize">{name}</p>
+          <div>
+            <p className="font-semibold capitalize text-sm md:text-base">
+              {name}
+            </p>
           </div>
         </div>
-        <div className="flex justify-end mt-3">
-          <p className="text-sm text-gray-600 capitalize">
-            {createdDate.split("T")[0].replace(/-/g, "/")}
+        <div className="flex justify-end mt-3 md:mt-0">
+          <p className="text-xs md:text-sm text-gray-600">
+            Created: {createdDate.split("T")[0].replace(/-/g, "/")}
           </p>
         </div>
       </div>
