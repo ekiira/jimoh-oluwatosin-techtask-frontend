@@ -5,9 +5,9 @@ import { ViewGridIcon, ViewListIcon } from "@heroicons/react/solid";
 import CardGrid from "../../components/Card/CardGrid";
 import CardList from "../../components/Card/CardList";
 import DropDown from "../../components/Dropdown";
+import FavoritesModal from "../../components/Modal";
 
 import { chatList } from "../../data";
-import FavoritesModal from "../../components/Modal";
 
 const filters = [
   { value: "name", label: "order by name" },
@@ -141,7 +141,6 @@ function ChatList() {
                       addToFavorite={() => addToFavorites(el.shortName)}
                       key={index}
                       name={el.name}
-                      slug={el.shortName}
                       plan={el.plan}
                       isFavorite={el.isFav}
                       image={el.image}
@@ -157,7 +156,6 @@ function ChatList() {
                         addToFavorite={() => addToFavorites(el.shortName)}
                         key={index}
                         name={el.name}
-                        slug={el.shortName}
                         createdDate={el.created}
                         isFavorite={el.isFav}
                         image={el.image}

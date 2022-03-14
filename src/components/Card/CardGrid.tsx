@@ -6,13 +6,12 @@ interface ICardGridProps {
   image: string;
   name: string;
   plan: string;
-  slug: string;
   isFavorite: boolean;
   addToFavorite: () => void;
 }
 
 function CardGrid(props: ICardGridProps) {
-  const { image, name, plan, isFavorite, slug, addToFavorite } = props;
+  const { image, name, plan, isFavorite, addToFavorite } = props;
 
   return (
     <div className="py-5 bg-white shadow-md h-auto rounded-lg px-5 text-center">
@@ -20,7 +19,7 @@ function CardGrid(props: ICardGridProps) {
         <Star isActive={isFavorite} onClick={addToFavorite} />
       </div>
       <div className="pt-5">
-        <Link to={slug}>
+        <Link to="profile">
           <img
             src={image}
             alt="avatar"

@@ -5,14 +5,13 @@ import Star from "../StarIcon";
 interface ICardListProps {
   image: string;
   name: string;
-  slug: string;
   isFavorite: boolean;
   createdDate: Date | string | any;
   addToFavorite: () => void;
 }
 
 function CardList(props: ICardListProps) {
-  const { image, name, isFavorite, slug, createdDate, addToFavorite } = props;
+  const { image, name, isFavorite, createdDate, addToFavorite } = props;
   return (
     <div className="flex items-center w-full mb-5">
       <div className="mr-3 md:mr-5">
@@ -21,7 +20,7 @@ function CardList(props: ICardListProps) {
       <div className="py-3 bg-white shadow-md h-auto w-full rounded-lg px-5 text-center md:flex items-center justify-between">
         <div className="flex items-center">
           <div className=" mr-4">
-            <Link to={slug}>
+            <Link to="profile">
               <img
                 src={image}
                 alt="avatar"

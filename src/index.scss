@@ -19,3 +19,7 @@ code {
 .input {
   @apply text-gray-600 rounded-lg border mb-1 w-full md:w-64 h-10 px-5 focus:outline-none placeholder:text-gray-400;
 }
+
+.img-rounded {
+  border-radius: 50%;
+}

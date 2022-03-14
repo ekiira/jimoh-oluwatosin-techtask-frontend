@@ -70,7 +70,6 @@ function FavoritesModal({ open, setOpen, data, addToFavorites }: IProps) {
                           }
                           key={index}
                           name={el.name}
-                          slug={el.shortName}
                           createdDate={el.created}
                           isFavorite={el.isFav}
                           image={el.image}

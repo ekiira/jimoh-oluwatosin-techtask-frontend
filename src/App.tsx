@@ -11,7 +11,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<ChatList />} />
-          <Route path=":profile" element={<ChatProfile />} />
+          <Route path="profile" element={<ChatProfile />} />
         </Routes>
       </Router>
     </div>
