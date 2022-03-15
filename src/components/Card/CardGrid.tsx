@@ -14,7 +14,10 @@ function CardGrid(props: ICardGridProps) {
   const { image, name, plan, isFavorite, addToFavorite } = props;
 
   return (
-    <div className="py-5 bg-white shadow-md h-auto rounded-lg px-5 text-center">
+    <div
+      className="py-5 bg-white shadow-md h-auto rounded-lg px-5 text-center"
+      role="grid"
+    >
       <div>
         <Star isActive={isFavorite} onClick={addToFavorite} />
       </div>

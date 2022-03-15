@@ -18,7 +18,7 @@ function DropDown({ options, me }: IDropdownProps) {
   return (
     <Menu as="div" className="inline-block text-left relative">
       <div>
-        <Menu.Button className="inline-flex justify-center w-full text-sm text-gray-600 focus:outline-none">
+        <Menu.Button className="inline-flex justify-center w-full text-sm text-gray-600 focus:outline-none" title="Filter" name='filter'>
           <AdjustmentsIcon className="h-8 w-8" />
         </Menu.Button>
       </div>

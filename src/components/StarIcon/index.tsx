@@ -6,6 +6,8 @@ function Star(props: IStarProps) {
   const { isActive, onClick } = props;
   return (
     <button
+      name="add"
+      title="Add to Favorites"
       onClick={onClick}
       className={`${
         isActive ? `text-yellow-400` : `text-gray-500`
