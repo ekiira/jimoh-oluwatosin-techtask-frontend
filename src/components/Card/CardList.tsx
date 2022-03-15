@@ -13,7 +13,7 @@ interface ICardListProps {
 function CardList(props: ICardListProps) {
   const { image, name, isFavorite, createdDate, addToFavorite } = props;
   return (
-    <div className="flex items-center w-full mb-5">
+    <div className="flex items-center w-full mb-5" role='list'>
       <div className="mr-3 md:mr-5">
         <Star isActive={isFavorite} onClick={addToFavorite} />
       </div>

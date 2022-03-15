@@ -97,11 +97,14 @@ function ChatList() {
                 className="input"
                 placeholder="search..."
                 value={search}
+                name="search"
                 onChange={onSearchFilter}
               />
             </div>
             <div className="flex justify-end items-baseline mt-3 md:mt-0">
               <button
+                name="grid"
+                title="Grid"
                 onClick={() => setViewType("grid")}
                 className={`mr-1 ${
                   viewType === "grid" ? `text-gray-600` : `text-gray-400`
@@ -111,6 +114,8 @@ function ChatList() {
               </button>
 
               <button
+                name="list"
+                title="List"
                 onClick={() => setViewType("list")}
                 className={`mr-1 ${
                   viewType === "list" ? `text-gray-600` : `text-gray-400`

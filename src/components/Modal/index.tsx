@@ -57,7 +57,7 @@ function FavoritesModal({ open, setOpen, data, addToFavorites }: IProps) {
           >
             <div className="inline-block align-bottom bg-sky-50 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
               <div className="bg-sky-50 px-5 lg:px-10 pt-8 pb-14">
-                <div className="">
+                <div>
                   <div>
                     <button onClick={() => setOpen(false)}>{`< Back`}</button>
                   </div>

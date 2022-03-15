@@ -1,15 +1,26 @@
-import Card from "../../components/Card";
-import { defaultProfile } from "../../data";
 import {
   ArrowCircleUpIcon,
   ArrowCircleDownIcon,
   BadgeCheckIcon,
 } from "@heroicons/react/solid";
 
+import Card from "../../components/Card";
+
+import { defaultProfile } from "../../data";
+
 function Profile() {
   return (
     <div className="pt-10 pb-20 md:py-20">
       <div className="w-11/12 lg:w-4/5 container mx-auto">
+        <div>
+          <h3
+            className="text-3xl md:text-4xl text-gray-800 font-medium mb-10 text-center md:text-left"
+            data-testid="profile"
+          >
+            {" "}
+            {defaultProfile.name.split(" ").slice(0, -1).join(" ")}'s Profile
+          </h3>
+        </div>
         <div>
           <Card>
             <div>
@@ -81,18 +92,18 @@ function Profile() {
                 <h3 className="text-2xl font-semibold border-b border-gray-800 pb-3 mb-5 text-left">
                   Users Stats
                 </h3>
-                <div className="text-left">
-                  <div className="lg:text-xl py-1 lg:py-3 uppercase font-semibold">
+                <div className="text-left text-gray-700 uppercase font-bold">
+                  <div className="lg:text-xl py-1 lg:py-3">
                     Active: <span>{defaultProfile.analytics.user.actived}</span>
                   </div>
-                  <div className="lg:text-xl py-1 lg:py-3 uppercase font-semibold">
+                  <div className="lg:text-xl py-1 lg:py-3">
                     Dormant:{" "}
                     <span>
                       {defaultProfile.analytics.user.total -
                         defaultProfile.analytics.user.actived}
                     </span>
                   </div>
-                  <div className="lg:text-xl py-1 lg:py-3 uppercase font-semibold">
+                  <div className="lg:text-xl py-1 lg:py-3">
                     Total: <span>{defaultProfile.analytics.user.total}</span>
                   </div>
                 </div>
